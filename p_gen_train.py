@@ -115,7 +115,8 @@ def Train():
             loss, abstracts_extend, pred = compute_loss(batch_X, batch_Y, lengths_X, model, max_oovs, oovs, articles_extend, abstracts_extend,  optimizer, is_train=True)
             # loss = loss/MAX_OUTPUT_LENGTH/batch_size
             train_loss+=loss*batch_size
-            print("iteration:",iteration,' train_loss:',loss)
+            if iteration % 100 ==0:
+                print("iteration:",iteration,' train_loss:',loss)
 
             # print("pred", [vocab._id2word(word) for word in pred[0]])
             # train_loss = loss
@@ -140,7 +141,7 @@ def Train():
             model_save_path = os.path.join(PATH, param+"_epoch_"+str(epoch)+("_bi" if bidirectional else "")+"_"+args.nameop)
             torch.save(state, model_save_path)
         
-        if epoch % 20 == 0:
+        if epoch % 1 == 0:
             # print("torch.tensor(abstracts_extend).transpose(0,1)[0]",torch.tensor(abstracts_extend).transpose(0,1)[0])
             # print('oovs[0]',oovs[0])
             print("ref", vocab.outputids2words(abstracts_extend[0], oovs[0]))
@@ -150,7 +151,7 @@ def Train():
 #モデル構
 model_name = args.model
 param = "model_"+model_name+"_"+"datasize_"+str(num_of_data)
-param = "model_attn_datasize_10_epoch_900_bi__epoch_550_bi_"
+# param = "model_attn_datasize_10_epoch_900_bi__epoch_550_bi_"
 
 if model_name == "vanila":
     model = VanilaEncoderDecoder(INPUT_VOCAB_SIZE,OUTPUT_VOCAB_SIZE,hidden_size).to(device)

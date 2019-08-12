@@ -20,8 +20,6 @@ class Vocab(object):
             self.id2word[self.count] = w
             self.count += 1
         
-        print('duc', self.id2word)
-        
         
         # Read the vocab file and add words up to max_size
         with open(vocab_file, 'r') as vocab_f:
